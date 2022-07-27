@@ -7,7 +7,7 @@ const { UsuarioDTO } = require('../models/Usuario');
 const Usuario = require('../models/Usuario');
 
 
-const rutas = Router()
+const AuthController = Router()
 
 
 
@@ -16,7 +16,7 @@ const validatePassword = async (pass,cpass) => {
 }
 const secreto = process.env.SECRET_KEY||'fasgsdgh'
 const firmarToken = (usuario) => jjwt.sign({usuario},secreto,{expiresIn:60*60*24})
-export const validarJWT = expressjwt({secret : secreto,algorithms:["HS256"]})
+const validarJWT = expressjwt({secret : secreto,algorithms:["HS256"]})
 const findAndAssignUser = async (req,res,next)=>{
     try {        
         console.log('asasf: auth',req.auth);
@@ -32,7 +32,7 @@ const findAndAssignUser = async (req,res,next)=>{
 }
 //const isAuthenticated = rutas.use(validarJWT,findAndAssignUser)
 
-rutas.post('/register',async (req,res)=>{
+AuthController.post('/register',async (req,res)=>{
     const body = req.body
     //console.log(body);
     try {
@@ -53,12 +53,12 @@ rutas.post('/register',async (req,res)=>{
         //const u:IUser = await user.save()
 
         //const firmado = jjwt.sign({_id:user._id},sc)
-        const firmado = firmarToken(user.usuarioDTO)
+        const firmado = firmarToken(user.usuarioDTO(user))
 
         //const u:UsuarioDTO = {name:user.name,lastname:user.lastname,email:user.email}
         
         res.status(201).send({
-            new_user:user.usuarioDTO,
+            new_user:user.usuarioDTO(user),
             token:firmado
         })
 
@@ -68,7 +68,7 @@ rutas.post('/register',async (req,res)=>{
     }
 })
 
-rutas.post('/login',async (req,res)=>{
+AuthController.post('/login',async (req,res)=>{
     const {body} = req
     console.log('body : ',body);
     
@@ -93,4 +93,4 @@ rutas.post('/login',async (req,res)=>{
     }
 })
 
-module.exports = rutas;
+module.exports = {AuthController,validarJWT};

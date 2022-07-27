@@ -1,17 +1,23 @@
 const express = require('express')
-const Usuario = require('../src/models/Usuario')
+const {AuthController} = require('./controllers/AuthController')
 const usuariosController = require('./controllers/UsuariosController')
 const sequelize = require('./db/database');
+const cors = require('cors')
 
 
 const app = express()
+
+app.use(express.json())
+app.use(cors())
+app.use(usuariosController)
+app.use(AuthController)
 
 async function algo(){
     await sequelize.sync({ force: true })
 }
 //algo()
 
-app.use(express.json())
+
 
 app.get('/test',async(req,res)=>{
     console.log('test prueba');
@@ -23,6 +29,8 @@ app.get('/test',async(req,res)=>{
     //console.log('u: ',jane);
     res.status(200).send({'user':todos})
 })
+
+
 app.listen(3000, () => {
-    console.log('iniciado');
+    console.log('iniciado en puerto 3000');
 })

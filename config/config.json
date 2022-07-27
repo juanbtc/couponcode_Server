@@ -3,7 +3,7 @@
     "username": "root",
     "password": "root",
     "database": "couponcode_db",
-    "host": "192.168.0.32",
+    "host": "192.168.0.7",
     "dialect": "mariadb",
     "connectTimeout":30000,
     "socketTimeout":30000
@@ -21,7 +21,7 @@
     "username": "root",
     "password": "root",
     "database": "couponcode_db",
-    "host": "127.0.0.1",
+    "host": "localhost",
     "dialect": "mariadb",
     "connectTimeout":5000,
     "socketTimeout":5000
